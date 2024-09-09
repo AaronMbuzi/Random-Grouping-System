@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Grouping System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        input, button {
+            margin: 10px 0;
+            padding: 10px;
+            width: 100%;
+        }
+        .group {
+            margin-top: 20px;
+        }
+        .group-name {
+            font-weight: bold;
+        }
+        .student-list {
+            padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Random Grouping System</h2>
+
+    <label for="students">Enter Students (comma-separated):</label>
+    <input type="text" id="students" placeholder="e.g., John, Alice, Bob, Sarah">
+
+    <label for="groups">Enter Groups (comma-separated):</label>
+    <input type="text" id="groups" placeholder="e.g., Group A, Group B, Group C">
+
+    <button id="runButton">Run</button>
+
+    <div id="result"></div>
+
+    <script>
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        document.getElementById('runButton').addEventListener('click', function () {
+            const students = document.getElementById('students').value.split(',').map(s => s.trim());
+            const groups = document.getElementById('groups').value.split(',').map(g => g.trim());
+
+            if (students.length === 0 || groups.length === 0) {
+                alert('Please enter both students and groups.');
+                return;
+            }
+
+            shuffleArray(students); // Shuffle the student list for random distribution
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = ''; // Clear previous results
+
+            let groupData = {};
+
+            // Initialize empty arrays for each group
+            groups.forEach(group => {
+                groupData[group] = [];
+            });
+
+            // Distribute students into groups evenly
+            students.forEach((student, index) => {
+                const groupIndex = index % groups.length;
+                groupData[groups[groupIndex]].push(student);
+            });
+
+            // Display the result
+            for (let group in groupData) {
+                const groupElement = document.createElement('div');
+                groupElement.className = 'group';
+                const groupName = document.createElement('p');
+                groupName.className = 'group-name';
+                groupName.textContent = group;
+                const studentList = document.createElement('ul');
+                studentList.className = 'student-list';
+                groupData[group].forEach(student => {
+                    const studentItem = document.createElement('li');
+                    studentItem.textContent = student;
+                    studentList.appendChild(studentItem);
+                });
+
+                groupElement.appendChild(groupName);
+                groupElement.appendChild(studentList);
+                resultDiv.appendChild(groupElement);
+            }
+        });
+    </script>
+</body>
+</html>
