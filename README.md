@@ -19,3 +19,4 @@ step 2: Click Run. The groups will be formed below the page.
 - [ ] Add the ability to save and export results.
 - [ ] Implement a more advanced user interface.
 - [ ] Add validation for input fields.
+- [ ] Exporting the Randomized Output as Text/Word/Excel Document.
